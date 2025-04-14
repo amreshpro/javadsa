@@ -26,19 +26,67 @@ class Array {
 
     // append data in array
     public void append(int data) throws Exception {
-        if (lastIndex < 0) {
-            ++lastIndex; // -1 + 1 = 0
-            this.ptr[lastIndex] = data;
-        } else {
+       
 
             if (isFull()) {
                 throw new Exception("Memory Full can't add more data");
             } else {
-                ++lastIndex;
-                this.ptr[lastIndex] = data;
+              
+                this.ptr[++lastIndex] = data;
             }
 
+        
+
+    }
+
+//  insert the value at given index
+    public void insert(int index,int data) throws Exception {
+
+        if (index < 0) {
+
+            throw new Exception("index can't be negative");
         }
+
+        if (lastIndex == this.capacity - 1) {
+
+            throw new Exception("memory is full can't add more items ");
+
+        }
+
+        // shift item right
+        for (int i = lastIndex; i >= index; i--) {
+
+            int temp = this.ptr[i];
+
+            this.ptr[i + 1] = temp;
+
+        }
+
+        this.ptr[index] = data;
+        ++lastIndex;
+
+    }
+
+    public void delete(int index) throws Exception {
+
+        if (index < 0) {
+
+            throw new Exception("index can't be negative");
+        }
+
+        if (isEmpty()) {
+
+            throw new Exception("can't delete item from an empty list ");
+
+        }
+
+        // shift item left
+        for (int i = index; i < lastIndex; i++) {
+
+            this.ptr[i] = this.ptr[i+1];
+
+        }
+        --lastIndex;
 
     }
 
@@ -67,8 +115,8 @@ class Array {
         if (index < 0) {
             throw new Exception("Index can't be negative");
         }
-        if (index > capacity) {
-            throw new Exception("can't access out of the capacity ");
+        if (index > lastIndex) {
+            throw new Exception("can't access index beyond current size");
         }
 
         return this.ptr[index];
@@ -79,8 +127,8 @@ class Array {
         if (index < 0) {
             throw new Exception("Index can't be negative");
         }
-        if (index > capacity) {
-            throw new Exception("can't access out of the capacity ");
+        if (index > lastIndex) {
+            throw new Exception("can't edit element beyond size ");
         }
 
         this.ptr[index] = data;
@@ -88,9 +136,10 @@ class Array {
     }
 
     public void display() {
-        for (int data : this.ptr) {
-            System.out.println(data + ", ");
+        for (int i = 0; i <=lastIndex; i++) {
+            System.out.print(this.ptr[i] + ", ");
         }
+        System.out.println();
     }
 
     public static void main(String[] args) throws Exception {
@@ -108,8 +157,13 @@ class Array {
         System.out.println("size:" + array.getSize());
         System.out.println("cap:" + array.getCapacity());
         array.editArrayElementAtGivenIndex(78, 4);
-        System.out.println("get: "+array.getValueAtIndex(4));
+        System.out.println("get: " + array.getValueAtIndex(4));
+
+        array.insert(4, 99);
         array.display();
+        array.delete(2);
+        array.display();
+
 
     }
 
